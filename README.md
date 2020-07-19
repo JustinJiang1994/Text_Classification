@@ -1,6 +1,11 @@
 # 中文文本分类
 
-基于tensorflow2.0中的keras进行中文的文本分类
+基于tensorflow2.0中的keras进行中文的文本分类  
+目前已完成：  
+  
+2020/07/18:TextCNN model  
+2020/07/19:LSTM model
+
 
 ## 环境
 
@@ -36,3 +41,6 @@ model.py:模型结构主体。
 config.py:配置文件，包含路径配置与各模型的相关参数。
 
 train.py:主函数文件
+
+## TODO  
+尝试包含预训练模型等方法进行优化

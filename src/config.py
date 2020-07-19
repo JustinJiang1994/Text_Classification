@@ -41,8 +41,15 @@ class Config(object):
                 "print_per_batch": 100,
                 "save_per_batch": 1000
             },
-            "result":{
-                "CNN_model_path": "../result/CNN_model.h5"
+            "LSTM": {
+                "seq_length": 600,
+                "num_classes": 10,
+                "vocab_size": 5000,
+                "batch_size": 64
+            },
+            "result": {
+                "CNN_model_path": "../result/CNN_model.h5",
+                "LSTM_model_path": "../result/LSTM_model.h5"
             }
         }
 

@@ -9,6 +9,9 @@ Created on 2020-07-19 00:12
 import tensorflow.keras as keras
 from config import Config
 from preprocess import preprocesser
+import os
+from sklearn import metrics
+import numpy as np
 
 
 class TextCNN(object):
@@ -55,6 +58,8 @@ class TextCNN(object):
         trainingSet_path = self.config.get("data_path", "trainingSet_path")
         valSet_path = self.config.get("data_path", "valSet_path")
         seq_length = self.config.get("CNN_training_rule", "seq_length")
+        model_save_path = self.config.get("result", "CNN_model_path")
+        batch_size = self.config.get("CNN_training_rule", "batch_size")
 
         x_train, y_train = self.pre.word2idx(trainingSet_path, max_length=seq_length)
         x_val, y_val = self.pre.word2idx(valSet_path, max_length=seq_length)
@@ -62,9 +67,76 @@ class TextCNN(object):
         model = self.model()
         for _ in range(epochs):
             model.fit(x_train, y_train,
-                      batch_size=32,
+                      batch_size=batch_size,
                       epochs=1,
                       validation_data=(x_val, y_val))
+            keras.models.save_model(model_save_path, overwrite=True)
+
+class LSTM(object):
+
+    def __init__(self):
+        self.config = Config()
+        self.pre = preprocesser()
+
+    def model(self):
+        seq_length = self.config.get("LSTM", "seq_length")
+        num_classes = self.config.get("LSTM", "num_classes")
+        vocab_size = self.config.get("LSTM", "vocab_size")
+
+
+        model_input = keras.layers.Input((seq_length))
+        embedding = keras.layers.Embedding(vocab_size, 256, input_length=seq_length)(model_input)
+        LSTM = keras.layers.LSTM(256)(embedding)
+        FC1 = keras.layers.Dense(256, activation="relu")(LSTM)
+        droped = keras.layers.Dropout(0.5)(FC1)
+        FC2 = keras.layers.Dense(num_classes, activation="softmax")(droped)
+
+        model = keras.models.Model(inputs=model_input, outputs=FC2)
+
+        model.compile(loss="categorical_crossentropy",
+                      optimizer=keras.optimizers.RMSprop(),
+                      metrics=["accuracy"])
+        model.summary()
+        return model
+
+    def train(self, epochs):
+        trainingSet_path = self.config.get("data_path", "trainingSet_path")
+        valSet_path = self.config.get("data_path", "valSet_path")
+        seq_length = self.config.get("LSTM", "seq_length")
+        model_save_path = self.config.get("result", "LSTM_model_path")
+        batch_size = self.config.get("LSTM", "batch_size")
+
+        model = self.model()
+
+        x_train, y_train = self.pre.word2idx(trainingSet_path, max_length=seq_length)
+        x_val, y_val = self.pre.word2idx(valSet_path, max_length=seq_length)
+
+        for _ in range(epochs):
+            model.fit(x_train, y_train,
+                      batch_size=batch_size,
+                      validation_data=(x_val, y_val),
+                      epochs=1)
+            keras.models.save_model(model_save_path, overwrite=True)
+
+    def test(self):
+        model_save_path = self.config.get("result", "LSTM_model_path")
+        testingSet_path = self.config.get("data_path", "testingSet_path")
+        seq_length = self.config.get("LSTM", "seq_length")
+
+
+        if os.path.exists(model_save_path):
+            model = keras.models.load_model(model_save_path)
+
+        x_test, y_test = self.pre.word2idx(testingSet_path, max_length=seq_length)
+        pre_test = model.predict(x_test)
+        metrics.classification_report(np.argmax(pre_test, axis=1), np.argmax(y_test, axis=1), digits=4, output_dict=True)
+        print(metrics.classification_report(np.argmax(pre_test, axis=1), np.argmax(y_test, axis=1)))
+
+
 if __name__ == '__main__':
-    test = TextCNN()
-    print(test.model())
+    # test = TextCNN()
+    # print(test.model())
+
+    LSTMTest = LSTM()
+    LSTMTest.train(3)
+    LSTMTest.test()
