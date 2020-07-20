@@ -18,6 +18,7 @@ Python3
 ## 数据集
 
 使用THUCNews进行训练与测试（由于数据集太大，无法上传到Github，可自行下载）  
+百度网盘:链接: https://pan.baidu.com/s/1nD9ej_waIPpk_GITTbgXGA  密码: 3swf  
 
 数据集划分如下：  
 训练集cnews.train.txt 50000条  
@@ -40,7 +41,12 @@ model.py:模型结构主体。
 
 config.py:配置文件，包含路径配置与各模型的相关参数。
 
-train.py:主函数文件
+main.py:主函数文件
+
+## 结果
+### CNN
+
+![image](https://github.com/sun830910/Text_Classification/img/CNN_result.png)
 
 ## TODO  
 尝试包含预训练模型等方法进行优化

@@ -23,10 +23,10 @@ class Config(object):
                 "num_classes": 10,
 
                 "conv1_num_filters": 128,
-                "conv1_kernel_size": 2,
+                "conv1_kernel_size": 1,
 
                 "conv2_num_filters": 64,
-                "conv2_kernel_size": 3,
+                "conv2_kernel_size": 1,
 
                 "vocab_size": 5000,
 

@@ -19,3 +19,4 @@ from model import TextCNN
 if __name__ == '__main__':
     CNN_model = TextCNN()
     CNN_model.train(3)
+    CNN_model.test()

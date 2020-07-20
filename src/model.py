@@ -35,7 +35,7 @@ class TextCNN(object):
         dropout_keep_prob = self.config.get("CNN_training_rule", "dropout_keep_prob")
 
         model_input = keras.layers.Input((seq_length,), dtype='float64')
-        embedding_layer = keras.layers.Embedding(vocab_size, 256, input_length=seq_length)
+        embedding_layer = keras.layers.Embedding(vocab_size+1, 256, input_length=seq_length)
         embedded = embedding_layer(model_input)
 
         # conv1形状[batch_size, seq_length, conv1_num_filters]
@@ -70,7 +70,23 @@ class TextCNN(object):
                       batch_size=batch_size,
                       epochs=1,
                       validation_data=(x_val, y_val))
-            keras.models.save_model(model_save_path, overwrite=True)
+            model.save(model_save_path, overwrite=True)
+
+    def test(self):
+        model_save_path = self.config.get("result", "CNN_model_path")
+        testingSet_path = self.config.get("data_path", "testingSet_path")
+        seq_length = self.config.get("CNN_training_rule", "seq_length")
+
+
+        if os.path.exists(model_save_path):
+            model = keras.models.load_model(model_save_path)
+            print("-----model loaded-----")
+
+        x_test, y_test = self.pre.word2idx(testingSet_path, max_length=seq_length)
+        pre_test = model.predict(x_test)
+        # metrics.classification_report(np.argmax(pre_test, axis=1), np.argmax(y_test, axis=1), digits=4, output_dict=True)
+        print(metrics.classification_report(np.argmax(pre_test, axis=1), np.argmax(y_test, axis=1)))
+
 
 class LSTM(object):
 
@@ -85,7 +101,7 @@ class LSTM(object):
 
 
         model_input = keras.layers.Input((seq_length))
-        embedding = keras.layers.Embedding(vocab_size, 256, input_length=seq_length)(model_input)
+        embedding = keras.layers.Embedding(vocab_size+1, 256, input_length=seq_length)(model_input)
         LSTM = keras.layers.LSTM(256)(embedding)
         FC1 = keras.layers.Dense(256, activation="relu")(LSTM)
         droped = keras.layers.Dropout(0.5)(FC1)
@@ -116,7 +132,7 @@ class LSTM(object):
                       batch_size=batch_size,
                       validation_data=(x_val, y_val),
                       epochs=1)
-            keras.models.save_model(model_save_path, overwrite=True)
+            model.save(model_save_path, overwrite=True)
 
     def test(self):
         model_save_path = self.config.get("result", "LSTM_model_path")
@@ -126,16 +142,20 @@ class LSTM(object):
 
         if os.path.exists(model_save_path):
             model = keras.models.load_model(model_save_path)
+            print("-----model loaded-----")
+
 
         x_test, y_test = self.pre.word2idx(testingSet_path, max_length=seq_length)
         pre_test = model.predict(x_test)
-        metrics.classification_report(np.argmax(pre_test, axis=1), np.argmax(y_test, axis=1), digits=4, output_dict=True)
+        # metrics.classification_report(np.argmax(pre_test, axis=1), np.argmax(y_test, axis=1), digits=4, output_dict=True)
         print(metrics.classification_report(np.argmax(pre_test, axis=1), np.argmax(y_test, axis=1)))
+
 
 
 if __name__ == '__main__':
     # test = TextCNN()
-    # print(test.model())
+    # test.train(3)
+    # test.test()
 
     LSTMTest = LSTM()
     LSTMTest.train(3)
