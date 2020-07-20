@@ -46,7 +46,7 @@ main.py:主函数文件
 ## 结果
 ### CNN
 
-![image](https://github.com/sun830910/Text_Classification/img/CNN_result.png)
+![image](https://github.com/sun830910/Text_Classification/blob/master/img/CNN_result.png)
 
 ## TODO  
 尝试包含预训练模型等方法进行优化
