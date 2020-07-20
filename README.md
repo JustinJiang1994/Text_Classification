@@ -5,6 +5,7 @@
   
 2020/07/18:TextCNN model  
 2020/07/19:LSTM model
+2020/07/20:preprocess代码优化
 
 
 ## 环境
@@ -45,8 +46,12 @@ main.py:主函数文件
 
 ## 结果
 ### CNN
-
+速度相当快，效果也不错，precision与recall都趋近于0.9  
 ![image](https://github.com/sun830910/Text_Classification/blob/master/img/CNN_result.png)
+
+
+## 小结
+CNN系列与RNN系列训练速度上的差距
 
 ## TODO  
 尝试包含预训练模型等方法进行优化
