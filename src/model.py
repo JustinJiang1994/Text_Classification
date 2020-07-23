@@ -81,9 +81,15 @@ class TextCNN(object):
         if os.path.exists(model_save_path):
             model = keras.models.load_model(model_save_path)
             print("-----model loaded-----")
+            model.summary()
 
         x_test, y_test = self.pre.word2idx(testingSet_path, max_length=seq_length)
+        # print(x_test.shape)
+        # print(type(x_test))
+        # print(y_test.shape)
+        # print(type(y_test))
         pre_test = model.predict(x_test)
+        # print(pre_test.shape)
         # metrics.classification_report(np.argmax(pre_test, axis=1), np.argmax(y_test, axis=1), digits=4, output_dict=True)
         print(metrics.classification_report(np.argmax(pre_test, axis=1), np.argmax(y_test, axis=1)))
 
@@ -143,20 +149,21 @@ class LSTM(object):
         if os.path.exists(model_save_path):
             model = keras.models.load_model(model_save_path)
             print("-----model loaded-----")
-
+            model.summary()
 
         x_test, y_test = self.pre.word2idx(testingSet_path, max_length=seq_length)
         pre_test = model.predict(x_test)
+
         # metrics.classification_report(np.argmax(pre_test, axis=1), np.argmax(y_test, axis=1), digits=4, output_dict=True)
         print(metrics.classification_report(np.argmax(pre_test, axis=1), np.argmax(y_test, axis=1)))
 
 
 
 if __name__ == '__main__':
-    # test = TextCNN()
+    test = TextCNN()
     # test.train(3)
-    # test.test()
+    test.test()
 
-    LSTMTest = LSTM()
-    LSTMTest.train(3)
-    LSTMTest.test()
+    # LSTMTest = LSTM()
+    # LSTMTest.train(3)
+    # LSTMTest.test()
