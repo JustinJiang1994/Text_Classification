@@ -2,10 +2,16 @@
 
 基于tensorflow2.0中的keras进行中文的文本分类  
 目前已完成：  
-  
+
 2020/07/18:TextCNN model  
 2020/07/19:LSTM model
 2020/07/20:preprocess代码优化
+
+
+
+fork from sun830910
+
+2021/01/03:经典魔改2分类，网络结构待调整
 
 
 ## 环境

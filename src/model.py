@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
 
-"""
-Created on 2020-07-19 00:12
-@Author  : Justin Jiang
-@Email   : jw_jiang@pku.edu.com
-"""
 
 import tensorflow.keras as keras
 from config import Config
