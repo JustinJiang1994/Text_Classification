@@ -1,0 +1,12 @@
+tensorflow>=2.8.0
+numpy>=1.19.2
+pandas>=1.2.0
+scikit-learn>=0.24.0
+matplotlib>=3.3.0
+tqdm>=4.50.0
+pytest>=6.0.0
+black>=21.5b2
+flake8>=3.9.0
+jupyter>=1.0.0
+transformers>=4.5.0
+torch>=1.8.0
